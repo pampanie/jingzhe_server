@@ -1,8 +1,14 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
+
 #include "ofxOsc.h"
 
+#include "ofxFlowTools.h"
+#include "MyFlowTools.h"
+
+#include "ofxSyphon.h"
 // listen on port 12345
 #define PORT 12345
 
@@ -20,10 +26,36 @@ public:
 	void exit();
 	
 	void getAudioData();
+
+	ofParameter<bool>	toggleGuiDraw;
+
+	
 	ofxOscReceiver 		receiver;
 	int					fftSize;
 	vector<float>		fft;
 	float				rms;
+	ofParameter<int>   	rmsFactor;	
+	
+	string				syphonServerName;
+	ofxSyphonClient		syphonClient;
+	
+	
+	ofFbo				kinect1Fbo;
+	ofFbo				kinect2Fbo;
+	ofFbo				animateFbo;
+	
+	MyFlowTools			myFlowTools1;
+	MyFlowTools			myFlowTools2;
+	
+	int					flowWidth;
+	int					flowHeight;
+	int					drawWidth;
+	int					drawHeight;
+	int					ratio;
+	// GUI
+	ofxPanel			gui;
+	void				setupGui();
+	void 				drawGui();
 	
 	void keyPressed(int key);
 	void keyReleased(int key);

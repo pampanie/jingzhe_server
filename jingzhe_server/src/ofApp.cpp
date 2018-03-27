@@ -4,27 +4,135 @@
 void ofApp::setup(){
 	
 	receiver.setup(PORT);
+	
+	drawWidth = 1920;
+	drawHeight = 1080;
+	flowWidth = 640;
+	flowHeight = 360;
+	
+	ratio = 4;
+	
+	syphonServerName = "Composition";//==================  TODO
+	syphonClient.setup();
+	syphonClient.set("Composition","Arena");
+//	syphonClient.setServerName(syphonServerName);
 
+	
+	// init fbos
+	kinect1Fbo.allocate(flowWidth, flowHeight);
+	kinect2Fbo.allocate(flowWidth, flowHeight);
+	animateFbo.allocate(flowWidth, flowHeight);
+
+	// int MyFLowTools
+	myFlowTools1.setup(drawWidth, drawHeight, ratio,"myFlow1");
+	myFlowTools2.setup(drawWidth, drawHeight, ratio,"myFlow2");
+
+	// init fft
+	for (int i = 0; i < 128; i ++) {
+		fft.push_back(0.0f);
+	}
+	setupGui();
+
+}
+
+//--------------------------------------------------------------
+void ofApp::setupGui() {
+	
+	gui.setup("settings");
+	gui.setDefaultBackgroundColor(ofColor(0, 0, 0, 127));
+	gui.setDefaultFillColor(ofColor(160, 160, 160, 160));
+//	gui.add(guiFPS.set("average FPS", 0, 0, 60));
+//	gui.add(guiMinFPS.set("minimum FPS", 0, 0, 60));
+	gui.add(toggleGuiDraw.set("show gui (G)", false));
+	gui.add(rmsFactor.set("rms rect height",1,10,100));
+	
+	//	gui.add(doFlipCamera.set("flip camera", true));
+	//	gui.add(doDrawCamBackground.set("draw camera (C)", true));
+	
+	// seva setting with give name
+	if (!ofFile("settings.xml"))
+		gui.saveToFile("settings.xml");
+	
+	gui.loadFromFile("settings.xml");
+	
+	
+	
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	getAudioData();
-}
 
+	getAudioData();
+
+	ofTexture syphonTex = syphonClient.getTexture();
+	
+	// update kinect1 texture
+	kinect1Fbo.begin();
+	syphonTex.draw(0,0, flowWidth, flowHeight);
+	kinect1Fbo.end();
+	
+	// update kinect2 texture
+	kinect2Fbo.begin();
+	syphonTex.draw(flowWidth,0, flowWidth, flowHeight);
+	kinect2Fbo.end();
+	
+	// update animate texture
+	animateFbo.begin();
+	ofSetColor(255);
+	ofDrawRectangle(0, drawHeight - rms * rmsFactor.get(), drawWidth,rms * rmsFactor.get());
+	animateFbo.end();
+	
+//	// update particle color
+//	int r = 0;
+//	int g = 0;
+//	int b = 0;
+//	myFlowTools1.setParticleColor(ofColor(r,g,b));
+//	
+//	r = 255;
+//	g = 255;
+//	b = 255;
+//	myFlowTools2.setParticleColor(ofColor(r,g,b));
+//	
+//	
+	// MyFlowTools update
+	myFlowTools2.update(&animateFbo, &kinect2Fbo);
+	myFlowTools1.update(&kinect1Fbo, &kinect2Fbo);
+	
+}
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+	ofClear(0,0);
+	myFlowTools1.draw();
+	myFlowTools2.draw();
+	syphonClient.draw(0,0);
+	if(toggleGuiDraw.get()){
+		drawGui();
+	}
+	
+	// debug osc receive
+//	ofSetColor(255);
+//	ofDrawBitmapString(ofToString(fft.at(60)), 10, 200);
+}
+//--------------------------------------------------------------
+void ofApp::drawGui(){
+	
+	gui.draw();
+	myFlowTools1.drawGui();
+	myFlowTools2.drawGui();
+	
 }
 //--------------------------------------------------------------
 void ofApp::exit(){
 	
-//--------------------------------------------------------------
-
+	receiver.stop();
+	
 }
+//--------------------------------------------------------------
 
 void ofApp::getAudioData(){
 	// check for waiting messages
+	cout << "get audio data" << endl;
 	while(receiver.hasWaitingMessages()){
 		// get the next message
 		ofxOscMessage m;
@@ -33,6 +141,7 @@ void ofApp::getAudioData(){
 		// check for mouse moved message
 		if(m.getAddress() == RMS){
 			rms = m.getArgAsInt(0);
+//			cout << rms << endl;
 		}
 		// check for mouse button message
 		else if(m.getAddress() == FFT){
@@ -40,10 +149,9 @@ void ofApp::getAudioData(){
 			fftSize = m.getArgAsInt(0);
 			for (int i = 0; i < fftSize; i++) {
 				// 1st arg is fftsize
-				fft.push_back(m.getArgAsFloat(i+1));
-				cout << fft.at(i) << endl;
+				fft.at(i) = m.getArgAsFloat(i+1);
 			}
-	
+
 		}
 		else{
 			// unrecognized message: display on the bottom of the screen
@@ -76,7 +184,14 @@ void ofApp::getAudioData(){
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	switch (key) {
+		case 'G':
+		case 'g':
+			toggleGuiDraw = !toggleGuiDraw; break;
+		default:
+			break;
+	}
+			
 }
 
 //--------------------------------------------------------------
