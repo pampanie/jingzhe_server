@@ -26,6 +26,7 @@ public:
 	void setup();
 	void update();
 	void draw();
+//	void drawGui(ofEventArgs & args);
 	void exit();
 	
 	void getAudioData();

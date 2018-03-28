@@ -119,11 +119,11 @@ void ofApp::draw(){
 	ofClear(0,0);
 	myFlowTools1.draw();
 	myFlowTools2.draw();
-	syphonClient.draw(0,0);
+//	syphonClient.draw(0,0);
 	if(toggleGuiDraw.get()){
 		drawGui();
-		drawAudioData();
-		drawContourData();
+		myFlowTools1.drawGui();
+		myFlowTools2.drawGui();
 	}
 	
 	
@@ -132,11 +132,14 @@ void ofApp::draw(){
 	//	ofDrawBitmapString(ofToString(fft.at(60)), 10, 200);
 }
 //--------------------------------------------------------------
+//void ofApp::drawGui(ofEventArgs & args){
+//	drawGui();
+//}
+//--------------------------------------------------------------
 void ofApp::drawGui(){
-	
 	gui.draw();
-	myFlowTools1.drawGui();
-	myFlowTools2.drawGui();
+	drawAudioData();
+	drawContourData();
 	
 }
 //--------------------------------------------------------------

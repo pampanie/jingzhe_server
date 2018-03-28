@@ -118,9 +118,9 @@ void MyFlowTools::exit(){
 
 void MyFlowTools::setupGui() {
 	
-	gui.setup("settings");
-	gui.setDefaultBackgroundColor(ofColor(0, 0, 0, 127));
-	gui.setDefaultFillColor(ofColor(160, 160, 160, 160));
+	gui.setup("particle settings");
+//	gui.setDefaultBackgroundColor(ofColor(0, 0, 0, 127));
+//	gui.setDefaultFillColor(ofColor(160, 160, 160, 160));
 	gui.add(ID.set(myID));
 	gui.add(drawMode.set("draw mode", DRAW_NOTHING, DRAW_NOTHING, DRAW_MOUSE));
 	
@@ -128,32 +128,32 @@ void MyFlowTools::setupGui() {
 	gui.add(drawName.set("MODE", "draw name"));
 	
 	
-	int guiColorSwitch = 0;
-	ofColor guiHeaderColor[2];
-	guiHeaderColor[0].set(160, 160, 80, 200);
-	guiHeaderColor[1].set(80, 160, 160, 200);
-	ofColor guiFillColor[2];
-	guiFillColor[0].set(160, 160, 80, 200);
-	guiFillColor[1].set(80, 160, 160, 200);
-	
-	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-	guiColorSwitch = 1 - guiColorSwitch;
+//	int guiColorSwitch = 0;
+//	ofColor guiHeaderColor[2];
+//	guiHeaderColor[0].set(160, 160, 80, 200);
+//	guiHeaderColor[1].set(80, 160, 160, 200);
+//	ofColor guiFillColor[2];
+//	guiFillColor[0].set(160, 160, 80, 200);
+//	guiFillColor[1].set(80, 160, 160, 200);
+//
+//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+//	guiColorSwitch = 1 - guiColorSwitch;
 	gui.add(particleFlow.parameters);
 	
-	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-	guiColorSwitch = 1 - guiColorSwitch;
+//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+//	guiColorSwitch = 1 - guiColorSwitch;
 	gui.add(opticalFlow.parameters);
 	
-	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-	guiColorSwitch = 1 - guiColorSwitch;
+//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+//	guiColorSwitch = 1 - guiColorSwitch;
 	gui.add(fluidSimulation.parameters);
 	
-	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-	guiColorSwitch = 1 - guiColorSwitch;
+//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+//	guiColorSwitch = 1 - guiColorSwitch;
 	gui.add(velocityMask.parameters);
 	
 	gui.minimizeAll();
@@ -164,10 +164,10 @@ void MyFlowTools::setupGui() {
 
 void MyFlowTools::drawGui() {
 	
-	ofPushStyle();
-	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+//	ofPushStyle();
+//	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	gui.draw();
-	ofPopStyle();
+//	ofPopStyle();
 }
 //--------------------------------------------------------------
 
