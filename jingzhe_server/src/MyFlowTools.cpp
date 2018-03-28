@@ -164,10 +164,10 @@ void MyFlowTools::setupGui() {
 
 void MyFlowTools::drawGui() {
 	
-//	ofPushStyle();
-//	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	ofPushStyle();
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	gui.draw();
-//	ofPopStyle();
+	ofPopStyle();
 }
 //--------------------------------------------------------------
 
