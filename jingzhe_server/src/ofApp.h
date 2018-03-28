@@ -13,8 +13,11 @@
 #define PORT 12345
 
 // protocol for osc address
-#define FFT 	"/fft"
-#define RMS		"/rms"
+#define FFT 				"/fft"
+#define RMS					"/rms"
+#define CONTOURCENTROID		"/cen"
+#define CONTOURBOUNDINGBOX	"/bb"
+#define CONTOURAREA			"/area"
 
 
 class ofApp : public ofBaseApp{
@@ -26,15 +29,26 @@ public:
 	void exit();
 	
 	void getAudioData();
-
+	void drawAudioData();
 	ofParameter<bool>	toggleGuiDraw;
 
 	
 	ofxOscReceiver 		receiver;
+	
+	ofParameter<int>	fftInfoX;
+	ofParameter<int>	fftInfoY;
 	int					fftSize;
 	vector<float>		fft;
 	float				rms;
 	ofParameter<int>   	rmsFactor;	
+	
+	// contour data
+	void				drawContourData();
+	ofPoint				contourCentroid;
+	float				contourArea;
+	ofRectangle			contourBoundingBox;
+	ofParameter<int>	contourInfoX;
+	ofParameter<int>	contourInfoY;
 	
 	string				syphonServerName;
 	ofxSyphonClient		syphonClient;
