@@ -67,8 +67,8 @@ void ofApp::setupGui() {
 	gui.add(contourInfoY.set("contour data y",0,50,drawHeight));
 	
 	
-	gui.add(particleWindSpeedThreshold.set("particle wind",1,10,400));
-	gui.add(particleWindSpeedDamping.set("particle wind",1,10,400));
+	gui.add(particleWindSpeedThreshold.set("particle wind threshold",1,10,400));
+	gui.add(particleWindSpeedDamping.set("particle wind damping",1,10,400));
 	
 	// seva setting with give name
 	if (!ofFile("settings.xml"))
@@ -137,7 +137,12 @@ void ofApp::updateByOSCData(){
 	particleWindSpeedDelta = contourCentroid.x - particleWindSpeedLast;
 	particleWindSpeedLast = contourCentroid.x;
 	if(abs(particleWindSpeedDelta) > particleWindSpeedThreshold.get() ){
-		particleWindSpeed -= particleWindSpeedDamping.get();
+		if(particleWindSpeed > 0){
+			particleWindSpeed -= particleWindSpeedDamping.get();
+		}
+		if(particleWindSpeed < 0){
+			particleWindSpeed += particleWindSpeedDamping.get();
+		}
 	}
 	
 	
