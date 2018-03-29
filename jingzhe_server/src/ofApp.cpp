@@ -67,6 +67,11 @@ void ofApp::setupGui() {
 	gui.add(contourInfoY.set("contour data y",0,50,drawHeight));
 	
 	
+	gui.add(particleColorModifierR.set("particle color r fix",-255,2,255));
+	gui.add(particleColorModifierR.set("particle color g fix",-255,2,255));
+	gui.add(particleColorModifierR.set("particle color b fix",-255,2,255));
+	
+	
 	gui.add(particleWindSpeedThreshold.set("particle wind threshold",1,10,400));
 	gui.add(particleWindSpeedDamping.set("particle wind damping",1,10,400));
 	
@@ -129,9 +134,9 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::updateByOSCData(){
 	particleColor = ofColor(
-							ofMap(contourBoundingBox.getWidth(),1,100,1,255,true),
-							ofMap(contourBoundingBox.getHeight(),1,100,1,255,true),
-							ofMap(contourBoundingBox.getCenter().x,1,640,1,255,true)
+							particleColorModifierR.get() +  ofMap(contourBoundingBox.getWidth(),1,100,1,255,true),
+							particleColorModifierG.get() + ofMap(contourBoundingBox.getHeight(),1,100,1,255,true),
+							particleColorModifierB.get() + ofMap(contourBoundingBox.getCenter().x,1,640,1,255,true)
 							);
 	
 	particleWindSpeedDelta = contourCentroid.x - particleWindSpeedLast;

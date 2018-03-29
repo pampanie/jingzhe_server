@@ -54,6 +54,11 @@ public:
 	ofParameter<int>	contourInfoX;
 	ofParameter<int>	contourInfoY;
 	ofColor				particleColor;
+	ofParameter<int>	particleColorModifierR;
+	ofParameter<int>	particleColorModifierG;
+	ofParameter<int>	particleColorModifierB;
+
+	
 	int					particleWindSpeed;
 	int					particleWindSpeedLast;
 	int 				particleWindSpeedDelta;
