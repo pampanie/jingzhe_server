@@ -12,10 +12,10 @@ void ofApp::setup(){
 	
 	ratio = 4;
 	
-	syphonServerName = "Composition";//==================  TODO
+//	syphonServerName = "Composition";//==================  TODO
+	syphonServerName = "Syphon2NDIClient";//==================  TODO
 	syphonClient.setup();
-	syphonClient.set("Composition","Arena");
-	//	syphonClient.setServerName(syphonServerName);
+	syphonClient.setServerName(syphonServerName);
 	
 	
 	// init fbos
@@ -38,6 +38,9 @@ void ofApp::setup(){
 	contourCentroid.set(0, 0);
 	contourBoundingBox.set(0, 0, 0, 0);
 	
+	particleWindSpeedLast = 0;
+	particleWindSpeedDelta = 0;
+
 }
 
 //--------------------------------------------------------------
@@ -63,6 +66,10 @@ void ofApp::setupGui() {
 	gui.add(contourInfoX.set("contour data x",0,50,drawWidth));
 	gui.add(contourInfoY.set("contour data y",0,50,drawHeight));
 	
+	
+	gui.add(particleWindSpeedThreshold.set("particle wind",1,10,400));
+	gui.add(particleWindSpeedDamping.set("particle wind",1,10,400));
+	
 	// seva setting with give name
 	if (!ofFile("settings.xml"))
 		gui.saveToFile("settings.xml");
@@ -78,7 +85,12 @@ void ofApp::setupGui() {
 void ofApp::update(){
 	
 	getAudioData();
+	updateByOSCData();
 	
+	// not sure if update both drummer and animate particle ========  TODO
+	myFlowTools1.setParticleSpeedX(particleWindSpeed);
+	myFlowTools1.setParticleSpeedX(particleWindSpeed);
+
 	ofTexture syphonTex = syphonClient.getTexture();
 	
 	// update kinect1 texture
@@ -101,12 +113,12 @@ void ofApp::update(){
 	//	int r = 0;
 	//	int g = 0;
 	//	int b = 0;
-	//	myFlowTools1.setParticleColor(ofColor(r,g,b));
+		myFlowTools1.setParticleColor(particleColor);
 	//
 	//	r = 255;
 	//	g = 255;
 	//	b = 255;
-	//	myFlowTools2.setParticleColor(ofColor(r,g,b));
+		myFlowTools2.setParticleColor(particleColor);
 	//
 	//
 	// MyFlowTools update
@@ -115,8 +127,26 @@ void ofApp::update(){
 	
 }
 //--------------------------------------------------------------
+void ofApp::updateByOSCData(){
+	particleColor = ofColor(
+							ofMap(contourBoundingBox.getWidth(),1,100,1,255,true),
+							ofMap(contourBoundingBox.getHeight(),1,100,1,255,true),
+							ofMap(contourBoundingBox.getCenter().x,1,640,1,255,true)
+							);
+	
+	particleWindSpeedDelta = contourCentroid.x - particleWindSpeedLast;
+	particleWindSpeedLast = contourCentroid.x;
+	if(abs(particleWindSpeedDelta) > particleWindSpeedThreshold.get() ){
+		particleWindSpeed -= particleWindSpeedDamping.get();
+	}
+	
+	
+	
+}
+//--------------------------------------------------------------
 void ofApp::draw(){
 	ofClear(0,0);
+	
 	myFlowTools1.draw();
 	myFlowTools2.draw();
 //	syphonClient.draw(0,0);

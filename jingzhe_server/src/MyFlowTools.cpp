@@ -199,6 +199,12 @@ void MyFlowTools::drawModeSetName(int &_value) {
 void MyFlowTools::setParticleColor(ofColor _color){
 	particleFlow.setParticleColor(_color);
 }
+//-------------------------------------------------------------
+void MyFlowTools::setParticleSpeedX(int _speed){
+	particleFlow.setGravity({
+		particleFlow.getGravity()[0] + _speed,
+		particleFlow.getGravity()[1]});
+}
 //--------------------------------------------------------------
 ofColor MyFlowTools::getParticleColor(){
 	return particleFlow.getParticleColor();

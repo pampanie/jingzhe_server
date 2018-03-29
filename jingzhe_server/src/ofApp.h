@@ -31,6 +31,8 @@ public:
 	
 	void getAudioData();
 	void drawAudioData();
+	void updateByOSCData();
+
 	ofParameter<bool>	toggleGuiDraw;
 
 	
@@ -48,9 +50,15 @@ public:
 	ofPoint				contourCentroid;
 	float				contourArea;
 	ofRectangle			contourBoundingBox;
+	
 	ofParameter<int>	contourInfoX;
 	ofParameter<int>	contourInfoY;
-	
+	ofColor				particleColor;
+	int					particleWindSpeed;
+	int					particleWindSpeedLast;
+	int 				particleWindSpeedDelta;
+	ofParameter<int>	particleWindSpeedThreshold;
+	ofParameter<int>	particleWindSpeedDamping;
 	string				syphonServerName;
 	ofxSyphonClient		syphonClient;
 	

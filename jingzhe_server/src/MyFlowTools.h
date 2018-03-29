@@ -47,6 +47,8 @@ public:
 	
 	void setParticleColor(ofColor _color);
 	ofColor getParticleColor();
+	
+	void setParticleSpeedX(int _speed);
 	void drawComposite(){
 		drawComposite(0,0,drawWidth,drawHeight);
 	};
